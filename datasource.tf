@@ -15,3 +15,14 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # For questions and contributions please contact info@iq3cloud.com
+
+data "azurerm_subnet" "bastion_snt" {
+  count                = var.subnet_name != null ? 1 : 0
+  name                 = var.subnet_name
+  virtual_network_name = var.vnet_name
+  resource_group_name  = var.vnet_resource_group
+}
+
+data "azurerm_resource_group" "rg" {
+  name = var.resource_group_name
+}

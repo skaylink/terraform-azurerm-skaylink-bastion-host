@@ -16,38 +16,40 @@
 
 # For questions and contributions please contact info@iq3cloud.com
 
-variable "name" {
+variable "usecase" {
   type        = string
-  description = "The name of the resource group you are deploying"
+  description = "Use case for the Bastion host"
+  nullable    = false
 }
 
-variable "location" {
+variable "environment" {
   type        = string
-  description = "The location of the resource group, defaults to west Europe"
-  default     = "westeurope"
+  description = "Environment you're deploying into"
+  default     = "dev"
+  nullable    = false
 }
 
-variable "customTag1" {
+variable "resource_group_name" {
   type        = string
-  description = "the first customTag"
+  description = "The resource group you wish to deploy the Bastion host in"
 }
 
-variable "customTag2" {
-  type        = string
-  description = "the second customTag"
+variable "vnet_name" {
+  type    = string
+  default = null
 }
 
-variable "customTag3" {
-  type        = string
-  description = "the third customTag"
+variable "subnet_name" {
+  type    = string
+  default = null
 }
 
-variable "customTag4" {
-  type        = string
-  description = "the fourth customTag"
+variable "vnet_resource_group" {
+  type    = string
+  default = null
 }
 
-variable "customTag5" {
-  type        = string
-  description = "the fifth customTag"
+variable "subnet_id" {
+  type    = string
+  default = null
 }

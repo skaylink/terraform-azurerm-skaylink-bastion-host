@@ -15,14 +15,28 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # For questions and contributions please contact info@iq3cloud.com
-resource "azurerm_resource_group" "resourcegroup" {
-  name     = var.name
-  location = var.location
-  tags = {
-    customTag1 = var.customTag1
-    customTag2 = var.customTag2
-    customTag3 = var.customTag3
-    customTag4 = var.customTag4
-    customTag5 = var.customTag5
+
+locals {
+  name = "${var.usecase}-${var.environment}-"
+}
+
+resource "azurerm_public_ip" "bastion_ip" {
+  name                = "${local.name}ip"
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  domain_name_label   = lower(replace(local.name, "/[[:^alnum:]]/", ""))
+}
+
+resource "azurerm_bastion_host" "bastion_host" {
+  name                = "${local.name}bas"
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+
+  ip_configuration {
+    name                 = "${local.name}cfg"
+    public_ip_address_id = azurerm_public_ip.bastion_ip.id
+    subnet_id            = var.subnet_id != null ? var.subnet_id : data.azurerm_subnet.bastion_snt[0].id
   }
 }
